@@ -1,6 +1,6 @@
 {
     "name": "anthracite-feedback-extension",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "scripts": {
         "start": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript --watch",
         "build": "rollup --config rollup.config.ts --configPlugin @rollup/plugin-typescript"

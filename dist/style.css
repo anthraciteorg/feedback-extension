@@ -1,0 +1,31 @@
+#chat {
+    > .mes {
+        /**
+         * NOTE: Due to technical limitations, voting is only for the last
+         * response in a chat.
+         */
+        &[is_user="false"][is_system="false"]:last-of-type
+            > .mes_block
+            > .ch_name
+            > .mes_buttons
+            > ant-feedback-controls {
+            display: block;
+        }
+
+        > .mes_block {
+            overflow: visible;
+
+            > .ch_name > .mes_buttons {
+                overflow: visible;
+
+                > ant-feedback-controls {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+#ant_feedback_settings .inline-drawer-toggle.inline-drawer-header {
+    margin-bottom: 0;
+}

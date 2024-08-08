@@ -1,0 +1,9 @@
+{
+    "display_name": "Anthracite Feedback",
+    "requires": [],
+    "optional": [],
+    "js": "index.js",
+    "css": "style.css",
+    "author": "Anthracite",
+    "version": "0.6.0"
+}

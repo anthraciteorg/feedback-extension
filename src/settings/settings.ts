@@ -14,6 +14,7 @@ const Defaults = {
 }
 
 export interface Settings {
+    version: number;
     userId: string;
     feedback: Record<string, Feedback>;
     endpoint: string;
@@ -34,7 +35,7 @@ export class SettingsContainer {
             SettingsContainer.key
         ];
 
-        // If existing, use as is.
+        // TODO: Add logic for migrations.
         if (this.container) return;
 
         this.container = {
