@@ -30,6 +30,10 @@ declare module 'silly' {
             };
         }[];
     }
+    export type CompletionChat = {
+        role: 'system' | 'user' | 'assistant';
+        content: string;
+    }
     export type GenerateOptions = {
         automatic_trigger?: boolean;
         force_name2?: boolean;
@@ -42,6 +46,8 @@ declare module 'silly' {
         maxLoops?: number;
         quietName?: string;
     }
+    export const name1: string;
+    export const name2: string;
     export const chat: Chat[];
     export const event_types: Record<string, string>;
     export const eventSource: any;

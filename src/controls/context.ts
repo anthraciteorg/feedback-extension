@@ -3,6 +3,9 @@ import * as silly from 'silly';
 /** The default timeout whilst waiting for context to generate. */
 const GenerateTimeoutMs = 1e3;
 
+/** The anonymous persona name to replace the current persona name. */
+const AnonymousName = 'Anon';
+
 /** The type of context that can be generated. */
 export enum GenerationType {
     Text,
@@ -30,7 +33,7 @@ export async function generateContext(): Promise<Context> {
 
     const message = silly.chat.at(-1)!;
     let context: Partial<Context> = {
-        completion: message.mes,
+        completion: anonymize(message.mes) as string,
         model: message.extra.model!,
         generationType: silly.main_api === 'textgenerationwebui'
             ? GenerationType.Text
@@ -42,8 +45,8 @@ export async function generateContext(): Promise<Context> {
         if (event.prompt === '') return;
 
         context.prompt = context.generationType === GenerationType.Text
-            ? event.prompt
-            : JSON.stringify(event.chat);
+            ? anonymize(event.prompt) as string
+            : JSON.stringify(anonymize(event.chat));
 
         resolve(context as Context);
     }
@@ -79,6 +82,27 @@ export async function generateContext(): Promise<Context> {
         silly.eventSource.removeListener(
             silly.event_types.CHAT_COMPLETION_PROMPT_READY,
             handleEvent
+        );
+    }
+}
+
+/**
+ * Anonymizes a given input string or chat completion array replacing all
+ * all instances of the current user name to {@link AnonymousName}.
+ * @param input The input string or chat completion array.
+ * @returns The anonymized string or chat completion array.
+ */
+function anonymize(input: string | silly.CompletionChat[]) {
+    if (Array.isArray(input)) {
+        return input.map(message => {
+            message.content = anonymize(message.content) as string;
+
+            return message;
+        });
+    } else {
+        return input.replaceAll(
+            new RegExp(silly.name1, 'gi'),
+            AnonymousName
         );
     }
 }
