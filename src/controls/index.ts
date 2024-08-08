@@ -282,9 +282,6 @@ export class Controls extends LitElement {
             }
 
             this._feedback.save();
-
-            // If still hovering at this point, open popup.
-            if (this._mouseOver) this._popupOpen = true;
         } catch (e) {
             if (e instanceof Response) {
                 switch (e.status) {
