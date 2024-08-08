@@ -8,8 +8,8 @@ const UserIdBytes = 256;
 
 /** The default settings when starting the extension for the first time. */
 const Defaults = {
-    version: 0.5,
-    endpoint: 'https://rlhf.frammie.ee',
+    version: 0.6,
+    endpoint: 'https://feedback.anthra.site',
     feedback: {},
 }
 
@@ -35,12 +35,15 @@ export class SettingsContainer {
             SettingsContainer.key
         ];
 
-        // TODO: Add logic for migrations.
-        if (this.container) return;
+        if (this.container) {
+            if (this.container.version === Defaults.version) return;
 
-        this.container = {
-            ...Defaults,
-            userId: this._generateUserId(),
+            this.container = migrate(this.container);
+        } else {
+            this.container = {
+                ...Defaults,
+                userId: this._generateUserId(),
+            }
         }
 
         this.save();
@@ -73,6 +76,24 @@ export class SettingsContainer {
     private _generateUserId() {
         return bytesToHex(sha256(randomBytes(UserIdBytes)));
     }
+}
+
+/**
+ * Migrates a settings container to a newer version.
+ * @param settings The settings container to migrate.
+ * @returns The migrated settings container.
+ */
+function migrate(settings: Settings) {
+    if (settings.version <= 0.5) {
+        if (settings.endpoint === 'https://rlhf.frammie.ee') {
+            settings.endpoint = 'https://feedback.anthra.site';
+            settings.feedback = {};
+        }
+
+        settings.version = 0.6;
+    }
+
+    return settings;
 }
 
 export const Settings = new SettingsContainer();

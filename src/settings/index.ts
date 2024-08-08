@@ -54,7 +54,7 @@ export class Settings extends Style {
             </div>
             <div id='metadata'>
                 <strong>Anthracite</strong>
-                <small>Version 0.6.0</small>
+                <small>Version 0.6.5</small>
                 <small>User ID:</small>
                 <small>${SettingsContainer.container.userId}</small>
             </div>
